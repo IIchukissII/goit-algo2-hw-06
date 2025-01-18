@@ -22,7 +22,7 @@ The table below shows the top 10 most frequent words (excluding common words) fo
 
 ## Visualization
 
-![Top Words Plot](.fig/top_words_plot.png)
+![Top Words Plot](./fig/top_words_plot.png)
 
 ## Notes
 - Common words (stop words) have been excluded from the analysis
