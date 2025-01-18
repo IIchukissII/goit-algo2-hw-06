@@ -62,22 +62,21 @@ def visualize_top_words(result, top_n=10):
     filtered_words = {word: count for word, count in result.items() if word.lower() not in stop_words}
     top_words = Counter(filtered_words).most_common(top_n)
 
-    # Split data into words and their frequencies
+    # Розділення даних на слова та їх частоти
     words, counts = zip(*top_words)
 
-    # Create the plot
-    plt.figure(figsize=(12, 6))
+    # Створення графіка
+    plt.figure(figsize=(10, 6))
     plt.barh(words, counts, color='skyblue')
     plt.xlabel('Frequency')
     plt.ylabel('Words')
-    plt.title(f'Top {top_n} Most Frequent Words (excluding common words)')
-    plt.gca().invert_yaxis()
-    plt.tight_layout()
+    plt.title('Top {} Most Frequent Words'.format(top_n))
+    plt.gca().invert_yaxis()  # Перевернути графік, щоб найбільші значення були зверху
     plt.show()
 
 def generate_readme(result, top_n=10):
     # Define the path for the plot image
-    plot_image_path = "fig/top_words_plot.png"
+    plot_image_path = "./fig/top_words_plot.png"
 
     # Save the plot
     visualize_top_words(result, top_n)
