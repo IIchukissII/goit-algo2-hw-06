@@ -56,7 +56,7 @@ async def map_reduce(url):
     )
     return dict(reduced_result)
 
-def visualize_top_words(result, top_n=10):
+def visualize_top_words(result, path, top_n=10):
     # Get top-N most frequent words, excluding very common words
     stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'}
     filtered_words = {word: count for word, count in result.items() if word.lower() not in stop_words}
@@ -72,16 +72,13 @@ def visualize_top_words(result, top_n=10):
     plt.ylabel('Words')
     plt.title('Top {} Most Frequent Words'.format(top_n))
     plt.gca().invert_yaxis()  # Перевернути графік, щоб найбільші значення були зверху
-    plt.show()
-
-def generate_readme(result, top_n=10):
-    # Define the path for the plot image
-    plot_image_path = "./fig/top_words_plot.png"
-
-    # Save the plot
-    visualize_top_words(result, top_n)
-    plt.savefig(plot_image_path, bbox_inches='tight', dpi=300)
+    plt.savefig(path, bbox_inches='tight', dpi=600)
     plt.close()
+
+def generate_readme(result, path, top_n=10):
+    # Save the plot
+    visualize_top_words(result, path, top_n)
+
 
     # Generate README content
     readme_content = """
@@ -108,7 +105,7 @@ The table below shows the top {} most frequent words (excluding common words) fo
     readme_content += f"""
 ## Visualization
 
-![Top Words Plot]({plot_image_path})
+![Top Words Plot]({path})
 
 ## Notes
 - Common words (stop words) have been excluded from the analysis
@@ -121,6 +118,7 @@ The table below shows the top {} most frequent words (excluding common words) fo
         f.write(readme_content)
 
 def main():
+    plot_image_path = "./fig/top_words_plot.png"
     url = "https://www.gutenberg.org/cache/epub/1661/pg1661.txt"
     
     # Create and get event loop
@@ -130,8 +128,7 @@ def main():
         result = loop.run_until_complete(map_reduce(url))
         
         # Generate visualization and README
-        visualize_top_words(result)
-        generate_readme(result)
+        generate_readme(result, path=plot_image_path)
         print("Analysis completed successfully!")
         
         return result
